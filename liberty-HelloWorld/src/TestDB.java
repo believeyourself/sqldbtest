@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Set;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ibm.json.java.JSON;
+import com.ibm.ws.xs.nosql.api.BasicDBList;
+import com.ibm.ws.xs.nosql.api.BasicDBObject;
+import com.ibm.ws.xs.nosql.api.util.JSON;
 
 /**
  * Servlet implementation class TestDB
@@ -38,7 +41,8 @@ public class TestDB extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().write("Hello");
 		String VCAP_SERVICES = System.getenv("VCAP_SERVICES");
-	//	response.getWriter().write(JSON.parse(VCAP_SERVICES).toString());
+		//response.getWriter().write(JSON.parse(VCAP_SERVICES).toString());
+		response.getWriter().write("all");
 		try {
 		InitialContext ctx = new InitialContext();
 		javax.sql.DataSource ds = (javax.sql.DataSource) 
@@ -55,12 +59,13 @@ public class TestDB extends HttpServlet {
 		}catch(NamingException ee) {
 			ee.printStackTrace();
 		}
-		/*
+		
 		String databaseHost;
 		String databaseName;
 		int port;
 		if (VCAP_SERVICES != null) {
 			BasicDBObject obj = (BasicDBObject) JSON.parse(VCAP_SERVICES);
+		//	System.out.println("obj"+obj);
 			String thekey = null;
 			Set<String> keys = obj.keySet();
 			for (String eachkey : keys) {
@@ -69,6 +74,7 @@ public class TestDB extends HttpServlet {
 				}
 			}
 			BasicDBList list = (BasicDBList) obj.get(thekey);
+		//	System.out.println("list"+list);
 			obj = (BasicDBObject) list.get("0");
 			obj = (BasicDBObject) obj.get("credentials");
 			databaseHost = (String) obj.get("host");
@@ -77,12 +83,13 @@ public class TestDB extends HttpServlet {
 			String user = (String) obj.get("username");
 			String password = (String) obj.get("password");
 			String url = (String) obj.get("jdbcurl");
+		//	System.out.println("url"+url+"username"+user+"password"+password);
 		} else {
 			// Use the jdbcurl or construct your own
 			// String databaseUrl = "jdbc:db2://" + databaseHost + ":" + port +
 			// "/" + databaseName;
 		}
-		*/
+		
 	}
 
 	/**
